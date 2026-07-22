@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Login')),
+        appBar: AppBar(title: const Center(child: const Text('Login'))),
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginLoadFailure) {
@@ -135,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: isLoading ? null : () => _submit,
+                          onPressed: isLoading ? null : _submit,
                           child: isLoading
                               ? const SizedBox(
                                   height: 24,

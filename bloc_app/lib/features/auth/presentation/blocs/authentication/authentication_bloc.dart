@@ -14,26 +14,26 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
     required AuthRepository authRepository,
-    required LogoutUsecase logoutUseCase,
+    required LogoutUseCase logoutUseCase,
   }) : _authRepository = authRepository,
        _logoutUseCase = logoutUseCase,
        super(const AuthenticationState.unknown()) {
     _authStateSubscription = _authRepository.onAuthStateChanged.listen((
       UserEntity? user,
     ) {
-      add(_AuthenticationStatusChanged(user));
+      add(AuthenticationStatusChanged(user));
     });
 
-    on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
-    on<_AuthenticationLogoutRequested>(_onLogoutRequested);
+    on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
+    on<AuthenticationLogoutRequested>(_onLogoutRequested);
   }
 
   final AuthRepository _authRepository;
-  final LogoutUsecase _logoutUseCase;
+  final LogoutUseCase _logoutUseCase;
   StreamSubscription<UserEntity?>? _authStateSubscription;
 
   void _onAuthenticationStatusChanged(
-    _AuthenticationStatusChanged event,
+    AuthenticationStatusChanged event,
     Emitter<AuthenticationState> emit,
   ) {
     if (event.user != null) {
@@ -44,7 +44,7 @@ class AuthenticationBloc
   }
 
   Future<void> _onLogoutRequested(
-    _AuthenticationLogoutRequested event,
+    AuthenticationLogoutRequested event,
     Emitter<AuthenticationState> emit,
   ) async {
     await _logoutUseCase(const NoParams());

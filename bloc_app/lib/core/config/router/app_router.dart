@@ -95,56 +95,55 @@ GoRouter createRouter(AuthenticationBloc authBloc) {
               return PostFormPage(postId: postId);
             },
           ),
-
-          StatefulShellRoute.indexedStack(
-            builder:
-                (
-                  BuildContext context,
-                  GoRouterState state,
-                  StatefulNavigationShell navigationShell,
-                ) {
-                  return ScaffoldWithNavBar(navigationShell: navigationShell);
+        ],
+      ),
+      StatefulShellRoute.indexedStack(
+        builder:
+            (
+              BuildContext context,
+              GoRouterState state,
+              StatefulNavigationShell navigationShell,
+            ) {
+              return ScaffoldWithNavBar(navigationShell: navigationShell);
+            },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.post,
+                name: RouteNames.post,
+                builder: (context, state) {
+                  return const PostPage();
                 },
-            branches: [
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: RoutePaths.post,
-                    name: RouteNames.post,
-                    builder: (context, state) {
-                      return const PostPage();
-                    },
-                  ),
-                ],
               ),
-              StatefulShellBranch(
-                routes: [
-                  GoRoute(
-                    path: RoutePaths.search,
-                    name: RouteNames.search,
-                    builder: (context, state) {
-                      return const SearchPage();
-                    },
-                  ),
-                ],
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.search,
+                name: RouteNames.search,
+                builder: (context, state) {
+                  return const SearchPage();
+                },
               ),
-              StatefulShellBranch(
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.profile,
+                name: RouteNames.profile,
+                builder: (context, state) {
+                  return const MyProfilePage();
+                },
                 routes: [
                   GoRoute(
-                    path: RoutePaths.profile,
-                    name: RouteNames.profile,
+                    path: RoutePaths.profileEdit,
+                    name: RouteNames.profileEdit,
                     builder: (context, state) {
-                      return const MyProfilePage();
+                      return const EditProfilePage();
                     },
-                    routes: [
-                      GoRoute(
-                        path: RoutePaths.profileEdit,
-                        name: RouteNames.profileEdit,
-                        builder: (context, state) {
-                          return const EditProfilePage();
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),

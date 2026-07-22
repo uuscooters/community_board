@@ -7,8 +7,8 @@ sealed class AuthenticationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-final class _AuthenticationStatusChanged extends AuthenticationEvent {
-  const _AuthenticationStatusChanged(this.user);
+final class AuthenticationStatusChanged extends AuthenticationEvent {
+  const AuthenticationStatusChanged(this.user);
 
   final UserEntity? user;
 
@@ -16,4 +16,4 @@ final class _AuthenticationStatusChanged extends AuthenticationEvent {
   List<Object?> get props => [user];
 }
 
-final class _AuthenticationLogoutRequested extends AuthenticationEvent {}
+final class AuthenticationLogoutRequested extends AuthenticationEvent {}

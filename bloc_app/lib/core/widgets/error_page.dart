@@ -15,7 +15,7 @@ class ErrorPage extends StatelessWidget {
     final loggedIn = context.watch<AuthenticationBloc>().state.user != null;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
+      appBar: AppBar(title: const Center(child: Text('Page Not Found'))),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(18.0),
