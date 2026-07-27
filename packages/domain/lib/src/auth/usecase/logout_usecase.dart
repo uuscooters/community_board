@@ -4,8 +4,8 @@ import 'package:fpdart/fpdart.dart';
 
 import '../repositories/repositories.dart';
 
-class LogoutUsecase implements UseCase<void, NoParams> {
-  LogoutUsecase({required AuthRepository authRepository})
+class LogoutUseCase implements UseCase<void, NoParams> {
+  LogoutUseCase({required AuthRepository authRepository})
     : _authRepository = authRepository;
 
   final AuthRepository _authRepository;

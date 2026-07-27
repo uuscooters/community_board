@@ -12,5 +12,5 @@
     "statusBar.noFolderBackground": "#610606",
     "statusBar.noFolderForeground": "#FFFBFB"
   },
-  "cSpell.words": ["authrepository"]
+  "cSpell.words": ["authrepository", "postrepository"]
 }

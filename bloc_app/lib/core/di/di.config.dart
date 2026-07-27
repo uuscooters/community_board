@@ -22,6 +22,15 @@ import '../../features/auth/presentation/blocs/authentication/authentication_blo
     as _i652;
 import '../../features/auth/presentation/blocs/login/login_bloc.dart' as _i1018;
 import '../../features/auth/presentation/blocs/signup/signup_bloc.dart' as _i41;
+import '../../features/post/presentation/blocs/comment_list/comment_list_bloc.dart'
+    as _i1009;
+import '../../features/post/presentation/blocs/post_detail/post_detail_bloc.dart'
+    as _i169;
+import '../../features/post/presentation/blocs/post_form/post_form_bloc.dart'
+    as _i79;
+import '../../features/post/presentation/blocs/post_list/post_list_bloc.dart'
+    as _i409;
+import '../event_bus/global_event_bus.dart' as _i665;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -33,6 +42,10 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule(this);
     gh.singleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
+    gh.singleton<_i665.GlobalEventBus>(
+      () => _i665.GlobalEventBus(),
+      dispose: (i) => i.dispose(),
+    );
     gh.lazySingleton<_i561.AuthRemoteDataSource>(
       () => registerModule.authRemoteDataSource,
     );
@@ -44,24 +57,55 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i456.PostRepository>(() => registerModule.postRepository);
     gh.factory<_i378.SignupUseCase>(() => registerModule.signupUseCase);
-    gh.factory<_i378.LogoutUsecase>(() => registerModule.logoutUseCase);
+    gh.factory<_i378.LogoutUseCase>(() => registerModule.logoutUseCase);
     gh.factory<_i41.SignupBloc>(
       () => _i41.SignupBloc(signupUseCase: gh<_i378.SignupUseCase>()),
     );
     gh.factory<_i378.LoginUseCase>(() => registerModule.loginUseCase);
-    gh.factory<_i456.GetPostUsecase>(() => registerModule.getPostUsecase);
-    gh.singleton<_i652.AuthenticationBloc>(
-      () => _i652.AuthenticationBloc(
-        authRepository: gh<_i378.AuthRepository>(),
-        logoutUseCase: gh<_i378.LogoutUsecase>(),
+    gh.factory<_i456.GetPostUseCase>(() => registerModule.getPostUseCase);
+    gh.factory<_i456.CreatePostUseCase>(() => registerModule.createPostUseCase);
+    gh.factory<_i456.UploadPostImageUseCase>(
+      () => registerModule.uploadPostImageUseCase,
+    );
+    gh.factory<_i456.GetPostDetailUseCase>(
+      () => registerModule.getPostDetailUseCase,
+    );
+    gh.factory<_i456.GetCommentUseCase>(() => registerModule.getCommentUseCase);
+    gh.factory<_i409.PostListBloc>(
+      () => _i409.PostListBloc(
+        getPostsUseCase: gh<_i456.GetPostUseCase>(),
+        globalEventBust: gh<_i665.GlobalEventBus>(),
       ),
-      dispose: (i) => i.close(),
     );
     gh.factory<_i1018.LoginBloc>(
       () => _i1018.LoginBloc(loginUseCase: gh<_i378.LoginUseCase>()),
     );
+    gh.factory<_i169.PostDetailBloc>(
+      () => _i169.PostDetailBloc(
+        getPostDetailUseCase: gh<_i456.GetPostDetailUseCase>(),
+      ),
+    );
+    gh.singleton<_i652.AuthenticationBloc>(
+      () => _i652.AuthenticationBloc(
+        authRepository: gh<_i378.AuthRepository>(),
+        logoutUseCase: gh<_i378.LogoutUseCase>(),
+      ),
+      dispose: (i) => i.close(),
+    );
+    gh.factory<_i79.PostFormBloc>(
+      () => _i79.PostFormBloc(
+        createPostUseCase: gh<_i456.CreatePostUseCase>(),
+        uploadPostImageUseCase: gh<_i456.UploadPostImageUseCase>(),
+        globalEvent: gh<_i665.GlobalEventBus>(),
+      ),
+    );
     gh.singleton<_i583.GoRouter>(
       () => registerModule.router(gh<_i652.AuthenticationBloc>()),
+    );
+    gh.factory<_i1009.CommentListBloc>(
+      () => _i1009.CommentListBloc(
+        getCommentUseCase: gh<_i456.GetCommentUseCase>(),
+      ),
     );
     return this;
   }
@@ -99,14 +143,34 @@ class _$RegisterModule extends _i291.RegisterModule {
       _i378.SignupUseCase(authRepository: _getIt<_i378.AuthRepository>());
 
   @override
-  _i378.LogoutUsecase get logoutUseCase =>
-      _i378.LogoutUsecase(authRepository: _getIt<_i378.AuthRepository>());
+  _i378.LogoutUseCase get logoutUseCase =>
+      _i378.LogoutUseCase(authRepository: _getIt<_i378.AuthRepository>());
 
   @override
   _i378.LoginUseCase get loginUseCase =>
       _i378.LoginUseCase(authrepository: _getIt<_i378.AuthRepository>());
 
   @override
-  _i456.GetPostUsecase get getPostUsecase =>
-      _i456.GetPostUsecase(postRepository: _getIt<_i456.PostRepository>());
+  _i456.GetPostUseCase get getPostUseCase =>
+      _i456.GetPostUseCase(postRepository: _getIt<_i456.PostRepository>());
+
+  @override
+  _i456.CreatePostUseCase get createPostUseCase =>
+      _i456.CreatePostUseCase(postRepository: _getIt<_i456.PostRepository>());
+
+  @override
+  _i456.UploadPostImageUseCase get uploadPostImageUseCase =>
+      _i456.UploadPostImageUseCase(
+        postRepository: _getIt<_i456.PostRepository>(),
+      );
+
+  @override
+  _i456.GetPostDetailUseCase get getPostDetailUseCase =>
+      _i456.GetPostDetailUseCase(
+        postRepository: _getIt<_i456.PostRepository>(),
+      );
+
+  @override
+  _i456.GetCommentUseCase get getCommentUseCase =>
+      _i456.GetCommentUseCase(postRepository: _getIt<_i456.PostRepository>());
 }
